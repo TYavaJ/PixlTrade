@@ -2,7 +2,7 @@ name: PixlTrade
 run-name: ${{ github.actor }} PixlTrade!
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Push-PixlTrade:
     runs-on: ubuntu-latest
     steps:
       - run: echo "[PixlTrade] Automatically ran the ${{ github.event_name }} event."
