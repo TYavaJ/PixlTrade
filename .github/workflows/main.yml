@@ -8,7 +8,6 @@ jobs:
       - run: echo "[PixlTrade] Automatically ran the ${{ github.event_name }} event."
       - run: echo "[PixlTrade] Job running on ${{ runner.os }} server hosted by GitHub!"
       - run: echo "[PixlTrade] Branch is ${{ github.ref }} and repository is ${{ github.repository }}."
-      - name: Check out PixlTrade
         uses: actions/checkout@v4
       - run: echo "💡 [PixlTrade] ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "[PixlTrade] Workflow ready to be tested"
