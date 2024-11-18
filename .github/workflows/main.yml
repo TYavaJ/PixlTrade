@@ -1,18 +1,34 @@
-name: PixlTrade
-run-name: ${{ github.actor }} PixlTrade!
-on: [push]
+name: Deployment Workflow
+
+# Trigger this workflow on pushes to the specified branch
+on:
+  push:
+    branches:
+      - ./
+
 jobs:
-  Push-PixlTrade:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - run: echo "[PixlTrade] Automatically ran the ${{ github.event_name }} event."
-      - run: echo "[PixlTrade] Job running on ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "[PixlTrade] Branch is ${{ github.ref }} and repository is ${{ github.repository }}."
-      - name: Check out PixlTrade
-        uses: actions/checkout@v4
-      - run: echo "💡 [PixlTrade] ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "[PixlTrade] Workflow ready to be tested"
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "Job Status ${{ job.status }}."
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build PixlTrade
+        run: npm run build
+
+      - name: SSH Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }} # Your server's IP address
+          username: ${{ secrets.USERNAME }} # Your server's username
+          key: ${{ secrets.SSH_PRIVATE_KEY }} # Your server's SSH private key
+          script: |
+            cd /var/www/pixltrade/
+            git pull
+            npm install
+            npm run build
+            pm2 restart your-pm2-service-name # Replace with your PM2 service name
